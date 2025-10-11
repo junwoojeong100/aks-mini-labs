@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      ACR_NAME: myacr1760169422
+      ACR_NAME: myacr1760169422 # Replace with your ACR name
 
     steps:
       - name: Checkout code
