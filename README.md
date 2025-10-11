@@ -3,6 +3,13 @@
 
 이 프로젝트는 Azure Kubernetes Service(AKS), 컨테이너 기술, DevOps 자동화(CI/CD)를 실습할 수 있는 핸즈온 랩 가이드입니다. 각 단계별로 Azure 기능과 실습 흐름을 반영한 주피터 노트북 기반 실습을 제공합니다.
 
+## 실습 환경
+
+이 실습은 **GitHub Codespaces**를 기본 환경으로 구성되어 있습니다. 
+- GitHub Codespaces를 사용하면 별도의 로컬 환경 설정 없이 브라우저에서 바로 실습을 시작할 수 있습니다.
+- 저장소를 열고 "Code" > "Create codespace on main"을 선택하여 실습 환경을 시작하세요.
+- Docker, Azure CLI, kubectl 등 필요한 도구들이 미리 설정되어 있습니다.
+
 ## 구성 파일
 
 - **01-container-basics.ipynb**
@@ -30,9 +37,10 @@
 
 ## 활용 방법
 
-1. 각 노트북을 순서대로 실행하며 실습을 진행하세요.
-2. Azure 구독, ACR, AKS 클러스터, GitHub 저장소, Azure DevOps 프로젝트가 필요합니다.
-3. 실습 중 궁금한 점이나 오류가 발생하면 각 셀의 설명 또는 최신 Azure 공식 문서를 참고하세요.
+1. GitHub Codespaces에서 이 저장소를 열어 실습 환경을 시작합니다.
+2. 각 노트북을 순서대로 실행하며 실습을 진행하세요.
+3. Azure 구독, ACR, AKS 클러스터, GitHub 저장소, Azure DevOps 프로젝트가 필요합니다.
+4. 실습 중 궁금한 점이나 오류가 발생하면 각 셀의 설명 또는 최신 Azure 공식 문서를 참고하세요.
 
 ## 목표
 
