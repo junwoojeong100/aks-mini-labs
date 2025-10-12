@@ -1,9 +1,14 @@
+# Kubernetes Deployment Template
+# ⚠️ 이 파일은 참고용 템플릿입니다.
+# 실제 배포 시에는 02-aks-hands-on.ipynb 노트북(섹션 3.3)에서 ACR 이름이 자동으로 채워진 파일이 생성됩니다.
+# ACR_NAME을 실제 Azure Container Registry 이름으로 교체하세요.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: myapp
@@ -14,13 +19,13 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: myacr1760169422.azurecr.io/myapp:latest
+        image: ${ACR_NAME}.azurecr.io/myapp:latest
         ports:
         - containerPort: 8080
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 250m
+            memory: 256Mi
           limits:
             cpu: 250m
             memory: 256Mi
