@@ -44,9 +44,11 @@ AKS 클러스터 생성 및 운영
 
 ### 03-cicd-automation.ipynb
 CI/CD 파이프라인 구축
-- GitHub Actions 워크플로우 생성
+- GitHub Actions 워크플로우 생성 (수동 활성화 필요)
 - Azure Pipelines 설정
 - ArgoCD를 통한 GitOps 배포
+
+> **참고**: GitHub Actions 워크플로우는 `.disabled` 확장자로 생성됩니다. 사용하려면 Secrets/Variables 설정 후 확장자를 제거하세요.
 
 ## 🎯 사전 요구사항
 
@@ -116,7 +118,10 @@ ACR_NAME = "myacr1760169422"  # 01번에서 생성된 실제 이름
 
 - **01번**: ACR 이름이 타임스탬프로 자동 생성됨 (예: myacr1760169422)
 - **02번**: `deployment.yaml`은 노트북에서 자동 생성됨
-- **03번**: GitHub Secrets 및 Azure DevOps Service Connection 설정 필요
+- **03번**: 
+  - GitHub Actions 워크플로우는 `.disabled` 상태로 생성됨
+  - 활성화하려면 GitHub Secrets (`AZURE_CREDENTIALS`) 및 Variables (`ACR_NAME`) 설정 후 `.disabled` 확장자 제거
+  - Azure DevOps Service Connection 설정 필요 (Azure Pipelines 사용 시)
 
 ## 🛠️ 문제 해결
 
@@ -172,7 +177,7 @@ aks-mini-labs/
 │   ├── pom.xml                    # Maven 설정
 │   └── src/                       # 소스 코드
 ├── .github/
-│   └── workflows/                 # GitHub Actions (3번에서 생성)
+│   └── workflows/                 # GitHub Actions (3번에서 생성, .disabled로 생성됨)
 └── azure-pipelines.yml            # Azure Pipelines (3번에서 생성)
 ```
 
