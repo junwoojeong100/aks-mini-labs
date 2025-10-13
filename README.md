@@ -41,16 +41,49 @@ Azure Kubernetes Service(AKS), 컨테이너 기술, CI/CD 자동화를 실습할
 
 ## 🚀 빠른 시작
 
-1. **GitHub Codespaces에서 실행**
+### 방법 1: GitHub Codespaces (권장)
    
-   [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/junwoojeong100/aks-mini-labs)
-   
-   - 위 버튼을 클릭하거나 저장소에서 `Code` > `Create codespace on main` 선택
-   - Docker, Azure CLI, kubectl 등이 사전 설치된 환경 제공
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/junwoojeong100/aks-mini-labs)
+
+- 위 버튼을 클릭하거나 저장소에서 `Code` > `Create codespace on main` 선택
+- 모든 도구가 자동으로 설치되며, 브라우저에서 바로 실습 가능
+- Python 가상환경, Azure CLI, Docker, kubectl 자동 설정
+
+### 방법 2: VS Code Dev Container (로컬)
+
+1. **사전 준비**
+   - [Docker Desktop](https://www.docker.com/products/docker-desktop) 설치
+   - [VS Code](https://code.visualstudio.com/) 설치
+   - [Dev Containers 확장](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 설치
+
+2. **실행 방법**
+   ```bash
+   git clone https://github.com/junwoojeong100/aks-mini-labs.git
+   cd aks-mini-labs
+   code .
+   ```
+   - VS Code에서 `Reopen in Container` 알림 클릭
+   - 또는 `Ctrl+Shift+P` → `Dev Containers: Reopen in Container` 실행
+
+3. **자동 설정**
+   - Python 가상환경 생성 (`.venv`)
+   - Jupyter 커널 등록
+   - Spring Boot 프로젝트 빌드
+   - 모든 도구 설치 (Java 21, Maven, Docker, kubectl, Azure CLI)
+
+### 실습 시작
+
+1. **Azure CLI 로그인**
+   ```bash
+   az login --use-device-code
+   ```
 
 2. **노트북 순서대로 실습**
-   - 01-container-basics.ipynb → 02-aks-hands-on.ipynb → 03-cicd-automation.ipynb
-   - Azure 구독 필요 (ACR, AKS 클러스터는 자동 생성)
+   - `01-container-basics.ipynb` → 컨테이너 기초 & ACR
+   - `02-aks-hands-on.ipynb` → AKS 클러스터 운영
+   - `03-cicd-automation.ipynb` → CI/CD 자동화
+
+> 💡 **Tip**: Jupyter 커널은 자동으로 `Python (.venv)`로 설정됩니다.
 
 ## 🎯 사전 요구사항
 
@@ -98,10 +131,14 @@ CI/CD 파이프라인 구축
 
 ```
 aks-mini-labs/
+├── .devcontainer/                 # Dev Container 설정
+│   ├── devcontainer.json          # 컨테이너 구성
+│   └── setup.sh                   # 자동 설정 스크립트
 ├── 01-container-basics.ipynb      # 컨테이너 기초 실습
 ├── 02-aks-hands-on.ipynb          # AKS 클러스터 실습
 ├── 03-cicd-automation.ipynb       # CI/CD 자동화 실습
 ├── config.py                      # 공통 환경 변수 설정
+├── requirements.txt               # Python 패키지 의존성
 ├── deployment.yaml                # Kubernetes 배포 템플릿
 ├── springboot-docker-demo/        # Spring Boot 샘플 앱
 │   ├── Dockerfile                 # 멀티 스테이지 빌드 설정

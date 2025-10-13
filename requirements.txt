@@ -1,0 +1,13 @@
+# Python 패키지 의존성
+# Jupyter Notebook 실행을 위한 기본 패키지
+ipykernel>=6.25.0
+jupyter>=1.0.0
+notebook>=7.0.0
+
+# Azure SDK 패키지
+azure-cli-core>=2.50.0
+azure-mgmt-containerregistry>=10.1.0
+azure-mgmt-containerservice>=20.0.0
+
+# 유틸리티 패키지
+requests>=2.31.0

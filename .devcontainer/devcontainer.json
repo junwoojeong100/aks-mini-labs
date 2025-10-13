@@ -1,0 +1,59 @@
+{
+  "name": "AKS Mini Labs",
+  "image": "mcr.microsoft.com/devcontainers/java:21-bullseye",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": "true"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Spring Boot App",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-spring-boot-dashboard",
+        "ms-azuretools.vscode-azurecontainerapps",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-docker",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-21",
+            "path": "/usr/local/sdkman/candidates/java/21.0.1-ms"
+          }
+        ],
+        "java.compile.nullAnalysis.mode": "automatic",
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "jupyter.notebookFileRoot": "${workspaceFolder}"
+      }
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  "remoteUser": "vscode"
+}
