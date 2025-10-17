@@ -10,7 +10,8 @@ Azure Kubernetes Service(AKS), 컨테이너 기술, CI/CD 자동화를 실습할
 - [실습 내용](#실습-내용)
 - [프로젝트 구조](#프로젝트-구조)
 - [환경 변수 및 공통 설정](#환경-변수-및-공통-설정)
-- [주의사항](#주의사항)
+- [실습 시작](#실습-시작)
+- [각 노트북별 주의사항](#각-노트북별-주의사항)
 - [문제 해결](#문제-해결)
 - [참고 자료](#참고-자료)
 - [기여 및 피드백](#기여-및-피드백)
@@ -70,20 +71,6 @@ Azure Kubernetes Service(AKS), 컨테이너 기술, CI/CD 자동화를 실습할
    - Jupyter 커널 등록
    - Spring Boot 프로젝트 빌드
    - 모든 도구 설치 (Java 21, Maven, Docker, kubectl, Azure CLI)
-
-### 실습 시작
-
-1. **Azure CLI 로그인**
-   ```bash
-   az login --use-device-code
-   ```
-
-2. **노트북 순서대로 실습**
-   - `01-container-basics.ipynb` → 컨테이너 기초 & ACR
-   - `02-aks-hands-on.ipynb` → AKS 클러스터 운영
-   - `03-cicd-automation.ipynb` → CI/CD 자동화
-
-> 💡 **Tip**: Jupyter 커널은 자동으로 `Python (.venv)`로 설정됩니다.
 
 ## 🎯 사전 요구사항
 
@@ -186,33 +173,48 @@ print(f"리소스 그룹: {RESOURCE_GROUP}")
 ```
 
 **중요: ACR_NAME 업데이트**
-- 01번 노트북 섹션 6.3에서 ACR 생성 후, `config.py` 파일의 `ACR_NAME` 값을 **실제 생성된 이름으로 수동 업데이트**하세요
-- 이렇게 하면 02, 03번 노트북에서 동일한 ACR을 자동으로 사용할 수 있습니다
+- 01번 노트북에서 ACR을 생성하면 이름이 타임스탬프로 자동 생성됨
+- 생성된 ACR 이름을 `config.py` 파일의 `ACR_NAME` 값으로 **수동 업데이트**해야 함 (상세 내용은 [각 노트북별 주의사항](#각-노트북별-주의사항) 참고)
 
-예시:
-```python
-# config.py 파일 수정
-ACR_NAME = "myacr1760169422"  # 01번에서 생성된 실제 이름
-```
+## 🚀 실습 시작
 
-## ⚠️ 주의사항
+### 사전 설정
 
-- **01번**: ACR 이름이 타임스탬프로 자동 생성됨 (예: myacr1760169422)
-- **02번**: `deployment.yaml`은 노트북에서 자동 생성됨
-- **03번**: 
-  - GitHub Actions 워크플로우는 `.disabled` 상태로 생성됨
-  - 활성화하려면 GitHub Secrets (`AZURE_CREDENTIALS`) 및 Variables (`ACR_NAME`) 설정 후 `.disabled` 확장자 제거
-  - Azure DevOps Service Connection 설정 필요 (Azure Pipelines 사용 시)
+1. **Azure CLI 로그인**
+   ```bash
+   az login --use-device-code
+   ```
+
+2. **노트북 실행 순서**
+   - `01-container-basics.ipynb` → 컨테이너 기초 & ACR
+   - `02-aks-hands-on.ipynb` → AKS 클러스터 운영
+   - `03-cicd-automation.ipynb` → CI/CD 자동화
+
+> 💡 **Tip**: Jupyter 커널은 자동으로 `Python (.venv)`로 설정됩니다.
+
+## ⚠️ 각 노트북별 주의사항
+
+### 01-container-basics.ipynb
+- **ACR 이름 자동 생성**: ACR 이름이 타임스탬프로 자동 생성됨 (예: `myacr1760169422`)
+- **ACR_NAME 수동 업데이트 필수**: 이 노트북에서 생성한 ACR 이름을 복사하여 `config.py`의 `ACR_NAME` 값을 수동으로 업데이트하세요
+  ```python
+  # config.py 파일 수정 예시
+  ACR_NAME = "myacr1760169422"  # 01번에서 생성된 실제 이름
+  ```
+
+### 02-aks-hands-on.ipynb
+- **deployment.yaml 자동 생성**: `deployment.yaml` 파일은 노트북 실행 중에 자동으로 생성됨
+
+### 03-cicd-automation.ipynb
+- **GitHub Actions 활성화 필요**: 
+  - 워크플로우 파일이 `.disabled` 상태로 생성됨
+  - 활성화하려면 다음 단계 수행:
+    1. GitHub Secrets 설정: `AZURE_CREDENTIALS`
+    2. GitHub Variables 설정: `ACR_NAME`
+    3. 워크플로우 파일의 `.disabled` 확장자 제거
+- **Azure DevOps Service Connection**: Azure Pipelines 사용 시 필요
 
 ## 🛠️ 문제 해결
-
-**Pod Pending 상태**
-- `kubectl describe pod <pod-name>`으로 원인 확인
-- NAP가 활성화되어 있으면 자동으로 노드 추가
-
-**리소스 그룹 변경**
-- 1번 노트북의 `RESOURCE_GROUP` 변수 수정
-- 이후 모든 노트북에서 동일한 이름 사용
 
 **ACR 로그인 실패**
 - Azure CLI 로그인 세션이 만료되었을 수 있음
@@ -222,20 +224,28 @@ ACR_NAME = "myacr1760169422"  # 01번에서 생성된 실제 이름
 - Docker 데몬이 실행 중인지 확인: `docker ps`
 - 디스크 공간 확인: `df -h`
 
+**Pod Pending 상태**
+- `kubectl describe pod <pod-name>`으로 원인 확인
+- NAP가 활성화되어 있으면 자동으로 노드 추가
+
+**리소스 그룹 변경**
+- `config.py`의 `RESOURCE_GROUP` 변수 수정
+- 이후 모든 노트북에서 동일한 이름 사용
+
 ## 🔗 참고 자료
 
+### 컨테이너 및 Docker
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Spring Boot Docker 가이드](https://spring.io/guides/gs/spring-boot-docker)
+
 ### Azure 공식 문서
-- [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/)
 - [Azure Container Registry](https://learn.microsoft.com/azure/container-registry/)
+- [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/)
 - [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/)
 
 ### Kubernetes
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [kubectl 치트시트](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
-
-### Spring Boot & Docker
-- [Spring Boot Docker 가이드](https://spring.io/guides/gs/spring-boot-docker)
-- [Docker 공식 문서](https://docs.docker.com/)
 
 ## 💬 기여 및 피드백
 
