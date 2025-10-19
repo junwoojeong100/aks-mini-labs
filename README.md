@@ -37,7 +37,7 @@ Azure Kubernetes Service(AKS), 컨테이너 기술, CI/CD 자동화를 실습할
 ### CI/CD 자동화
 - ✅ GitHub Actions 워크플로우 작성
 - ✅ Azure Pipelines 구성
-- ✅ GitOps 개념 이해 및 ArgoCD 활용
+- ✅ GitOps 개념 이해 및 Argo CD 활용
 - ✅ 자동화된 배포 파이프라인 구축
 
 ## 🚀 빠른 시작
@@ -110,7 +110,7 @@ AKS 클러스터 생성 및 운영
 CI/CD 파이프라인 구축
 - GitHub Actions 워크플로우 생성 (수동 활성화 필요)
 - Azure Pipelines 설정
-- ArgoCD를 통한 GitOps 배포
+- Argo CD를 통한 GitOps 배포
 
 > **참고**: GitHub Actions 워크플로우는 `.disabled` 확장자로 생성됩니다. 사용하려면 Secrets/Variables 설정 후 확장자를 제거하세요.
 
