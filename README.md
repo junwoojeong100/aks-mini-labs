@@ -72,6 +72,20 @@ Azure Kubernetes Service(AKS), 컨테이너 기술, CI/CD 자동화를 실습할
    - Spring Boot 프로젝트 빌드
    - 모든 도구 설치 (Java 21, Maven, Docker, kubectl, Azure CLI)
 
+### 실습 시작하기
+
+1. **Azure CLI 로그인**
+   ```bash
+   az login --use-device-code
+   ```
+
+2. **노트북 실행 순서**
+   - `01-container-basics.ipynb` → 컨테이너 기초 & ACR
+   - `02-aks-hands-on.ipynb` → AKS 클러스터 운영
+   - `03-cicd-automation.ipynb` → CI/CD 자동화
+
+> 💡 **Tip**: Jupyter 커널은 자동으로 `Python (.venv)`로 설정됩니다.
+
 ## 🎯 사전 요구사항
 
 ### 필수 항목
@@ -132,7 +146,7 @@ aks-mini-labs/
 │   ├── pom.xml                    # Maven 설정
 │   └── src/                       # 소스 코드
 ├── .github/
-│   └── workflows/                 # GitHub Actions (3번에서 생성, .disabled로 생성됨)
+│   └── workflows/                 # GitHub Actions (3번에서 생성)
 └── azure-pipelines.yml            # Azure Pipelines (3번에서 생성)
 ```
 
@@ -148,7 +162,7 @@ aks-mini-labs/
 |--------|------|--------|-------------|
 | `RESOURCE_GROUP` | Azure 리소스 그룹 이름 | `aks-mini-labs-rg` | 01, 02, 03 |
 | `LOCATION` | Azure 리전 | `koreacentral` | 01, 02, 03 |
-| `ACR_NAME` | ACR 이름 (생성 후 업데이트) | `None` → 타임스탬프로 자동 생성 | 01, 02, 03 |
+| `ACR_NAME` | ACR 이름 (01번 실습 후 업데이트 필요) | `None` → 타임스탬프로 자동 생성 | 01, 02, 03 |
 | `AKS_CLUSTER_NAME` | AKS 클러스터 이름 | `aks-mini-labs-cluster` | 02, 03 |
 | `APP_NAME` | 애플리케이션 이름 | `myapp` | 01, 02, 03 |
 | `IMAGE_TAG` | 이미지 태그 | `latest` | 01, 02, 03 |
@@ -172,47 +186,33 @@ print_config()
 print(f"리소스 그룹: {RESOURCE_GROUP}")
 ```
 
-**중요: ACR_NAME 업데이트**
-- 01번 노트북에서 ACR을 생성하면 이름이 타임스탬프로 자동 생성됨
-- 생성된 ACR 이름을 `config.py` 파일의 `ACR_NAME` 값으로 **수동 업데이트**해야 함 (상세 내용은 [각 노트북별 주의사항](#각-노트북별-주의사항) 참고)
-
-## 🚀 실습 시작
-
-### 사전 설정
-
-1. **Azure CLI 로그인**
-   ```bash
-   az login --use-device-code
-   ```
-
-2. **노트북 실행 순서**
-   - `01-container-basics.ipynb` → 컨테이너 기초 & ACR
-   - `02-aks-hands-on.ipynb` → AKS 클러스터 운영
-   - `03-cicd-automation.ipynb` → CI/CD 자동화
-
-> 💡 **Tip**: Jupyter 커널은 자동으로 `Python (.venv)`로 설정됩니다.
+> ⚠️ **중요**: `ACR_NAME` 업데이트 방법은 [각 노트북별 주의사항](#각-노트북별-주의사항)을 참고하세요.
 
 ## ⚠️ 각 노트북별 주의사항
 
 ### 01-container-basics.ipynb
-- **ACR 이름 자동 생성**: ACR 이름이 타임스탬프로 자동 생성됨 (예: `myacr1760169422`)
-- **ACR_NAME 수동 업데이트 필수**: 이 노트북에서 생성한 ACR 이름을 복사하여 `config.py`의 `ACR_NAME` 값을 수동으로 업데이트하세요
-  ```python
-  # config.py 파일 수정 예시
-  ACR_NAME = "myacr1760169422"  # 01번에서 생성된 실제 이름
-  ```
+- **ACR 이름 자동 생성**: ACR 이름이 타임스탬프로 자동 생성됩니다 (예: `myacr1760169422`)
+- **ACR_NAME 수동 업데이트 필수**: 
+  1. 노트북 실행 후 생성된 ACR 이름을 확인
+  2. `config.py` 파일을 열어 `ACR_NAME` 값을 업데이트
+     ```python
+     # config.py 파일 수정 예시
+     ACR_NAME = "myacr1760169422"  # 생성된 실제 이름으로 변경
+     ```
+  3. 파일 저장 후 02, 03번 노트북에서 해당 ACR 사용 가능
 
 ### 02-aks-hands-on.ipynb
-- **deployment.yaml 자동 생성**: `deployment.yaml` 파일은 노트북 실행 중에 자동으로 생성됨
+- **AKS 클러스터 생성 시간**: 약 5-10분 소요
+- **deployment.yaml 자동 생성**: Kubernetes 배포 매니페스트가 자동으로 생성됩니다
 
 ### 03-cicd-automation.ipynb
-- **GitHub Actions 활성화 필요**: 
-  - 워크플로우 파일이 `.disabled` 상태로 생성됨
-  - 활성화하려면 다음 단계 수행:
-    1. GitHub Secrets 설정: `AZURE_CREDENTIALS`
-    2. GitHub Variables 설정: `ACR_NAME`
-    3. 워크플로우 파일의 `.disabled` 확장자 제거
-- **Azure DevOps Service Connection**: Azure Pipelines 사용 시 필요
+- **GitHub Actions 워크플로우 활성화**:
+  - 워크플로우 파일이 `.disabled` 확장자로 생성됩니다
+  - 활성화 절차:
+    1. GitHub Repository Settings에서 Secrets 설정: `AZURE_CREDENTIALS`
+    2. GitHub Repository Settings에서 Variables 설정: `ACR_NAME`
+    3. `.github/workflows/` 디렉토리의 워크플로우 파일에서 `.disabled` 확장자 제거
+- **Azure DevOps**: Azure Pipelines 사용 시 Service Connection 설정이 필요합니다
 
 ## 🛠️ 문제 해결
 
@@ -254,7 +254,7 @@ print(f"리소스 그룹: {RESOURCE_GROUP}")
 2. 변경사항 커밋
 3. Pull Request 제출
 
-버그 리포트나 기능 제안은 [Issues](https://github.com/junwoojeong100/aks-mini-labs/issues) 탭을 이용해주세요.
+버그 리포트나 기능 제안은 [Issues](https://github.com/junwoojeong100/aks-mini-labs/issues)를 이용해주세요.
 
 ## 📄 라이선스
 
@@ -262,4 +262,4 @@ print(f"리소스 그룹: {RESOURCE_GROUP}")
 
 ---
 
-💡 **문의 및 피드백:** Issues 탭을 이용해주세요.
+Made with ❤️ for Azure & Kubernetes learners
